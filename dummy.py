@@ -37,7 +37,7 @@ class Mydataset(torch.utils.data.Dataset):
         origin=np.load(self.path_to_data + 'origin/' + self.Y[idx])
         origin_real=origin.real
         origin_imag=origin.imag
-        return torch.tensor([noised_real, noised_imag]), torch.tensor([origin_real, origin_imag]) # 1, 129, 357 chacuns 
+        return torch.tensor(np.array([noised_real, noised_imag])), torch.tensor(np.array([origin_real, origin_imag])) # 1, 129, 357 chacuns 
 
 dataloader_test = DataLoader(Mydataset('./data/spectrogrammes/test/'), batch_size=10 , shuffle=True)
 dataloader_train = DataLoader(Mydataset('./data/spectrogrammes/train/'), batch_size=10 , shuffle=True)
@@ -65,7 +65,6 @@ class Dummy (nn.Module):
 
 chemin_vers_sauvegarde_model ='./dummy_model.pth'
 
-
 # set train_dummy to True to train the model
 train_dummy = True
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
@@ -77,19 +76,17 @@ model.to(device)
 loss_train=[]
 loss_val=[]
 if train_dummy:
-    print('begin training')
     for epoch in (range(n_epochs)):
-        if epoch%10==0:
-            print(epoch)
+        print(epoch)
         losstrain=0
         counttrain=0
         lossval=0
         countval=0
         for batch_x,batch_y in dataloader_train:
             counttrain+=1
-            batch_x.to(device)
+            batch_x=batch_x.to(device)
             batch_y = batch_y.long()
-            batch_y.to(device)
+            batch_y=batch_y.to(device)
             optimizer.zero_grad()
             mask_predicted = model(batch_x.float())
             batch_y_predicted = batch_x * mask_predicted
@@ -99,8 +96,8 @@ if train_dummy:
             optimizer.step()
         for batch_x,batch_y in dataloader_validation:
             countval+=1
-            batch_x.to(device)
-            batch_y.to(device)
+            batch_x=batch_x.to(device)
+            batch_y = batch_y.to(device)
             with torch.no_grad():
                 mask_predicted = model(batch_x.float())
                 batch_y_predicted =  batch_x * mask_predicted
