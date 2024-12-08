@@ -69,7 +69,7 @@ chemin_vers_sauvegarde_model ='./models/'+model_name+'/'
 train_dummy = True
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 model = Dummy()
-n_epochs=1
+n_epochs=200
 loss = torch.nn.L1Loss()
 optimizer = torch.optim.Adam(model.parameters())
 model.to(device)
