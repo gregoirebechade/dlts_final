@@ -62,8 +62,9 @@ class Dummy (nn.Module):
     x = F.relu(self.deconv2(x)) #[10, 1, 251, 321]
     return x # on ressort un masque
   
+model_name='dummy_snd_test'
 
-chemin_vers_sauvegarde_model ='./dummy_model_test.pth'
+chemin_vers_sauvegarde_model ='.models/'+model_name+'/'
 
 # set train_dummy to True to train the model
 train_dummy = True
@@ -105,10 +106,11 @@ if train_dummy:
                 lossval+=l
         if epoch%10==0:
             print(f'epoch {epoch}, training loss = {losstrain/counttrain}')
+            torch.save(model, chemin_vers_sauvegarde_model+'_'+str(epoch)+'.pth')
         loss_train.append(losstrain/counttrain)
         loss_val.append(lossval/countval)
         
-    torch.save(model, chemin_vers_sauvegarde_model)
+    torch.save(model, chemin_vers_sauvegarde_model+'_final'+'.pth')
 
 
     # saving the losses in txt files : 
@@ -116,10 +118,10 @@ if train_dummy:
     loss_list_train = [loss_train[i].detach().cpu().numpy() for i in range(len(loss_train))]
 
 
-    with open('./loss_val_dummy.txt', 'w') as f : 
+    with open('./losses/loss_val_'+model_name+'.txt', 'w') as f : 
         for elt in loss_list_val : 
             f.write(str(elt) + '\n')
 
-    with open('./loss_train_dummy.txt', 'w') as f : 
+    with open('./losses/loss_train_'+model_name+'.txt', 'w') as f :
         for elt in loss_list_train : 
             f.write(str(elt) + '\n')
