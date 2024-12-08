@@ -112,8 +112,9 @@ if train_dummy:
 
 
     # saving the losses in txt files : 
-    loss_list_val=[loss_val[i].detach().numpy() for i in range(len(loss_val))]
-    loss_list_train=[loss_train[i].detach().numpy() for i in range(len(loss_train))]
+    loss_list_val = [loss_val[i].detach().cpu().numpy() for i in range(len(loss_val))]
+    loss_list_train = [loss_train[i].detach().cpu().numpy() for i in range(len(loss_train))]
+
 
     with open('./loss_val_dummy.txt', 'w') as f : 
         for elt in loss_list_val : 
