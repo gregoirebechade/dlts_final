@@ -1,12 +1,9 @@
-
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import os 
 import numpy as np
 from scipy.io import wavfile
-
 from torch.utils.data import DataLoader
 import tqdm
 from scipy.signal import stft, istft
@@ -63,8 +60,10 @@ class Dummy (nn.Module):
     return x # on ressort un masque
   
 model_name='dummy_snd_test'
+if not os.path.exists('./models/'+model_name):
+    os.makedirs('./models/'+model_name)
 
-chemin_vers_sauvegarde_model ='.models/'+model_name+'/'
+chemin_vers_sauvegarde_model ='./models/'+model_name+'/'
 
 # set train_dummy to True to train the model
 train_dummy = True
