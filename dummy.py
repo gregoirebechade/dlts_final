@@ -63,13 +63,13 @@ class Dummy (nn.Module):
     return x # on ressort un masque
   
 
-chemin_vers_sauvegarde_model ='./dummy_model.pth'
+chemin_vers_sauvegarde_model ='./dummy_model_test.pth'
 
 # set train_dummy to True to train the model
 train_dummy = True
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 model = Dummy()
-n_epochs=200
+n_epochs=1
 loss = torch.nn.L1Loss()
 optimizer = torch.optim.Adam(model.parameters())
 model.to(device)
