@@ -167,7 +167,7 @@ class UNet(nn.Module):
 
 
 
-chemin_vers_sauvegarde_unet ='./models/unet/unet_final.pth'
+chemin_vers_sauvegarde_unet ='./models/unet/unet_final'
 
 
 # set train_unet to True to train the model
@@ -213,7 +213,7 @@ if train_unet:
                 lossval+=l
         if epoch%10==0:
             print(f'epoch {epoch}, training loss = {losstrain/counttrain}')
-            torch.save(model, chemin_vers_sauvegarde_unet+model_name+'_'+str(epoch)+'.pth')
+            torch.save(model, chemin_vers_sauvegarde_unet+'_'+str(epoch)+'.pth')
         loss_train.append(losstrain/counttrain)
         loss_val.append(lossval/countval)
         
