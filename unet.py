@@ -109,13 +109,16 @@ class UNet(nn.Module):
 
         x = self.deconv5(x)
         x = x[:, :, :, :321]
-        x = torch.sigmoid(x)
+        # x = torch.sigmoid(x) # la sigmoide empêche l'apprentissage 
+        x = F.relu(x)
         return x
 
 
 
 
 chemin_vers_sauvegarde_unet ='./models/unet/unet'
+
+
 
 
 # set train_unet to True to train the model
@@ -159,6 +162,7 @@ if train_unet:
                 batch_y_predicted =  batch_x * mask_predicted
                 l = loss(batch_y_predicted, batch_y)
                 lossval+=l
+        print(f'epoch {epoch}, training loss = {losstrain/counttrain}')
         if epoch%10==0:
             print(f'epoch {epoch}, training loss = {losstrain/counttrain}')
             torch.save(model, chemin_vers_sauvegarde_unet+'_'+str(epoch)+'.pth')
