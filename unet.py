@@ -96,7 +96,7 @@ chemin_vers_sauvegarde_unet ='./models/unet/unet_final.pth'
 
 
 # set train_unet to True to train the model
-train_unet = False
+train_unet = True
 model_name='unet'
 if not os.path.exists('./models/'+model_name):
     os.makedirs('./models/'+model_name)
