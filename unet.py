@@ -162,7 +162,6 @@ if train_unet:
                 batch_y_predicted =  batch_x * mask_predicted
                 l = loss(batch_y_predicted, batch_y)
                 lossval+=l
-        print(f'epoch {epoch}, training loss = {losstrain/counttrain}')
         if epoch%10==0:
             print(f'epoch {epoch}, training loss = {losstrain/counttrain}')
             torch.save(model, chemin_vers_sauvegarde_unet+'_'+str(epoch)+'.pth')
