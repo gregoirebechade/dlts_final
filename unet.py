@@ -40,58 +40,6 @@ dataloader_test = DataLoader(Mydataset('./data/spectrogrammes/test/'), batch_siz
 dataloader_train = DataLoader(Mydataset('./data/spectrogrammes/train/'), batch_size=10 , shuffle=True)
 dataloader_validation = DataLoader(Mydataset('./data/spectrogrammes/validation/'), batch_size=10 , shuffle=True)
 
-# class UNet(nn.Module): 
-#   def __init__(self):
-#     super(UNet, self).__init__()
-#     self.conv1 = nn.Conv2d(in_channels=2, out_channels=32, kernel_size=(5, 5), stride=2)
-#     self.conv2 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=(5, 5), stride=2)
-#     self.conv3 = nn.Conv2d(in_channels=64, out_channels=128, kernel_size=(5, 5), stride=2)
-#     self.conv4 = nn.Conv2d(in_channels=128, out_channels=256, kernel_size=(5, 5), stride=2)
-#     self.conv5 = nn.Conv2d(in_channels=256, out_channels=512, kernel_size=(5, 5), stride=2)
-#     self.deconv1 = nn.ConvTranspose2d(in_channels=512, out_channels=256, kernel_size=(6, 6), stride=2)
-#     self.deconv2 = nn.ConvTranspose2d(in_channels=256, out_channels=128, kernel_size=(6, 6), stride=2)
-#     self.deconv3 = nn.ConvTranspose2d(in_channels=128, out_channels=64, kernel_size=(6, 6), stride=2)
-#     self.deconv4 = nn.ConvTranspose2d(in_channels=64, out_channels=32, kernel_size=(6, 6), stride=2)
-#     self.deconv5 = nn.ConvTranspose2d(in_channels=32, out_channels=1, kernel_size=(5, 5), stride=2)
-
-#   def forward(self, x): 
-#     x = (self.conv1(x))
-#     x = nn.BatchNorm2d(32)(x)
-#     x = nn.LeakyReLU(negative_slope=0.2)(x)
-#     x = (self.conv2(x))
-#     x = nn.BatchNorm2d(64)(x)
-#     x = nn.LeakyReLU(negative_slope=0.2)(x)
-#     x = (self.conv3(x))
-#     x = nn.BatchNorm2d(128)(x)
-#     x = nn.LeakyReLU(negative_slope=0.2)(x)
-#     x = (self.conv4(x))
-#     x = nn.Dropout(p=0.5)(x)
-#     x = nn.BatchNorm2d(256)(x)
-#     x = (self.conv5(x))
-#     x = nn.Dropout(p=0.5)(x)
-#     x = nn.BatchNorm2d(512)(x)
-#     x = (self.deconv1(x))
-#     x = x[: , : , : , :17 ]
-#     x = nn.BatchNorm2d(256)(x)
-#     x = F.relu(x)
-#     x = nn.Dropout(p=0.5)(x)
-#     x = (self.deconv2(x))
-#     x = x[: , : , : , :37 ]
-#     x = nn.BatchNorm2d(128)(x)
-#     x = F.relu(x)
-#     x = nn.Dropout(p=0.5)(x)
-#     x = (self.deconv3(x))
-#     x = nn.BatchNorm2d(64)(x)
-#     x = F.relu(x)
-#     x = nn.Dropout(p=0.5)(x)
-#     x = (self.deconv4(x))
-#     x = nn.BatchNorm2d(32)(x)
-#     x = F.relu(x)
-#     x = (self.deconv5(x))
-#     x = x[:, :, :, :321]
-#     x = F.sigmoid(x)
-#     return x 
-
 
 class UNet(nn.Module): 
     def __init__(self):
