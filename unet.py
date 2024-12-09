@@ -164,7 +164,7 @@ if train_unet:
                 lossval+=l
         if epoch%10==0:
             print(f'epoch {epoch}, training loss = {losstrain/counttrain}')
-            torch.save(model, chemin_vers_sauvegarde_unet+'_'+str(epoch)+'.pth')
+            # torch.save(model, chemin_vers_sauvegarde_unet+'_'+str(epoch)+'.pth')
         loss_train.append(losstrain/counttrain)
         loss_val.append(lossval/countval)
         
