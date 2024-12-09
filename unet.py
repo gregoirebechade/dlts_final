@@ -177,7 +177,7 @@ if not os.path.exists('./models/'+model_name):
     os.makedirs('./models/'+model_name)
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 model = UNet()
-n_epochs=1
+n_epochs=500
 loss = torch.nn.L1Loss()
 optimizer = torch.optim.Adam(model.parameters())
 model.to(device)
