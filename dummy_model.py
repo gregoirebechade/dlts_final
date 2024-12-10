@@ -83,8 +83,6 @@ if train_dummy_model:
             optimizer.zero_grad()
             mask_predicted = model(batch_x.float())
             batch_y_predicted = batch_x * mask_predicted
-            if np.random.rand()>0.99 : 
-                print(batch_y_predicted[0][0][0])
             l = loss(batch_y_predicted, batch_y)
             l.backward()
             losstrain+=l
@@ -100,7 +98,6 @@ if train_dummy_model:
                 lossval+=l
         if epoch%10==0:
             print(f'epoch {epoch}, training loss = {losstrain/counttrain}')
-            print(model.parameters())
             torch.save(model, chemin_vers_sauvegarde_dummy+model_name+'_'+str(epoch)+'.pth')
         loss_train.append(losstrain/counttrain)
         loss_val.append(lossval/countval)
