@@ -90,7 +90,7 @@ if train_dummy_model:
         for batch_x,batch_y in dataloader_validation:
             countval+=1
             batch_x=batch_x.to(device)
-            print(model(batch_x.float())[0])
+            # print(model(batch_x.float())[0])
             batch_y = batch_y.to(device)
             with torch.no_grad():
                 mask_predicted = model(batch_x.float())
