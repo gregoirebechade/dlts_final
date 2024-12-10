@@ -52,7 +52,7 @@ chemin_vers_sauvegarde_dummy = 'models/dummy_model/'
 
 
 # set train_dummy to True to train the model
-train_dummy_model = False
+train_dummy_model = True
 
 model_name='dummy_model'
 if not os.path.exists('models/'+model_name):
@@ -117,4 +117,3 @@ if train_dummy_model:
 
 
 
-dummy_model_loaded =  torch.load(chemin_vers_sauvegarde_dummy,map_location=torch.device('cpu'))
