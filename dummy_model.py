@@ -76,7 +76,6 @@ if train_dummy_model:
         lossval=0
         countval=0
         for batch_x,batch_y in dataloader_train:
-            print(model[batch_x.float()])
             counttrain+=1
             batch_x=batch_x.to(device)
             batch_y = batch_y.long()
@@ -84,6 +83,8 @@ if train_dummy_model:
             optimizer.zero_grad()
             mask_predicted = model(batch_x.float())
             batch_y_predicted = batch_x * mask_predicted
+            if np.random.rand()>0.99 : 
+                print(batch_y_predicted[0][0][0])
             l = loss(batch_y_predicted, batch_y)
             l.backward()
             losstrain+=l
@@ -104,7 +105,7 @@ if train_dummy_model:
         loss_train.append(losstrain/counttrain)
         loss_val.append(lossval/countval)
         
-    torch.save(model, chemin_vers_sauvegarde_dummy+'_final'+'.pth')
+    torch.save(model, chemin_vers_sauvegarde_dummy+'dummy_model_final'+'.pth')
 
 
     # saving the losses in txt files : 
