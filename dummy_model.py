@@ -100,7 +100,6 @@ if train_dummy_model:
                 lossval+=l
         if epoch%10==0:
             print(f'epoch {epoch}, training loss = {losstrain/counttrain}')
-            print(model.parameters())
             torch.save(model, chemin_vers_sauvegarde_dummy+model_name+'_'+str(epoch)+'.pth')
         loss_train.append(losstrain/counttrain)
         loss_val.append(lossval/countval)
