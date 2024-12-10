@@ -76,6 +76,7 @@ if train_dummy_model:
         lossval=0
         countval=0
         for batch_x,batch_y in dataloader_train:
+            print(model[batch_x.float()])
             counttrain+=1
             batch_x=batch_x.to(device)
             batch_y = batch_y.long()
