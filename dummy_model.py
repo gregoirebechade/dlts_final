@@ -15,9 +15,12 @@ class Dummy_model(nn.Module):
     def __init__(self): 
         super(Dummy_model, self).__init__()
         self.conv1 = nn.Conv2d(in_channels=2, out_channels=1,  kernel_size=11, stride=1, padding='same')
+        self.conv2 = nn.Conv2d(in_channels=1, out_channels=1,  kernel_size=11, stride=1, padding='same')
     def forward(self, x): # [10, 2, 251, 321]
         x = self.conv1(x)
         x = F.leaky_relu(x, negative_slope=0.2) # [10, 1, 251, 321]
+        x = self.conv2(x)
+        x = F.leaky_relu(x, negative_slope=0.2)
         return x
     
 
