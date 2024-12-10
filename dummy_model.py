@@ -11,9 +11,15 @@ from scipy.signal import stft, istft
 
 
 
-
-
-
+class Dummy_model(nn.Module): 
+    def __init__(self): 
+        super(Dummy_model, self).__init__()
+        self.conv1 = nn.Conv2d(in_channels=2, out_channels=1,  kernel_size=11, stride=1, padding='same')
+    def forward(self, x): # [10, 2, 251, 321]
+        x = self.conv1(x)
+        x = F.relu(x) # [10, 1, 251, 321]
+        return x
+    
 
 
 class Mydataset(torch.utils.data.Dataset):
@@ -41,41 +47,25 @@ dataloader_train = DataLoader(Mydataset('./data/spectrogrammes/train/'), batch_s
 dataloader_validation = DataLoader(Mydataset('./data/spectrogrammes/validation/'), batch_size=10 , shuffle=True)
 
 
-class Dummy (nn.Module):
 
-  def __init__(self):
-    super(Dummy, self).__init__()
-    self.conv1 = nn.Conv2d(in_channels=2, out_channels=16, kernel_size=(11, 11), stride=2, padding=5)
-    self.conv2 = nn.Conv2d(in_channels=16, out_channels=32, kernel_size=(8, 8), stride=2, padding=4)
-    self.deconv1 = nn.ConvTranspose2d(in_channels=32, out_channels=16, kernel_size=(8, 8), stride=2, padding=4, output_padding=1)
-    self.deconv2 = nn.ConvTranspose2d(in_channels=16, out_channels=1, kernel_size=(11, 11), stride=2, padding=5)
-    
+chemin_vers_sauvegarde_dummy = './models/dummy_model/'
 
-  def forward(self, x): # x = [10, 2, 251, 321]
-    x = F.relu(self.conv1(x)) # [10, 16, 126, 161]
-    x = F.relu(self.conv2(x)) # [10, 32, 64, 81]
-    x = F.relu(self.deconv1(x)) #[10, 16, 127, 161]
-    x = x[:, :, :126, :] # slicing nécessaire pour que les dimensions correspondent, car la convolution transpose n'est pas l'inverse de la convolution x.shape -> #[10, 16, 127, 161]
-    x = F.relu(self.deconv2(x)) #[10, 1, 251, 321]
-    return x # on ressort un masque
-  
-model_name='dummy_snd_test'
-if not os.path.exists('./models/'+model_name):
-    os.makedirs('./models/'+model_name)
-
-chemin_vers_sauvegarde_model ='./models/'+model_name+'/'
 
 # set train_dummy to True to train the model
-train_dummy = False
+train_dummy_model = False
+
+model_name='dummy_model'
+if not os.path.exists('./models/'+model_name):
+    os.makedirs('./models/'+model_name)
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
-model = Dummy()
+model = Dummy_model()
 n_epochs=200
 loss = torch.nn.L1Loss()
 optimizer = torch.optim.Adam(model.parameters())
 model.to(device)
 loss_train=[]
 loss_val=[]
-if train_dummy:
+if train_dummy_model:
     for epoch in (range(n_epochs)):
         print(epoch)
         losstrain=0
@@ -105,11 +95,11 @@ if train_dummy:
                 lossval+=l
         if epoch%10==0:
             print(f'epoch {epoch}, training loss = {losstrain/counttrain}')
-            torch.save(model, chemin_vers_sauvegarde_model+model_name+'_'+str(epoch)+'.pth')
+            torch.save(model, chemin_vers_sauvegarde_dummy+model_name+'_'+str(epoch)+'.pth')
         loss_train.append(losstrain/counttrain)
         loss_val.append(lossval/countval)
         
-    torch.save(model, chemin_vers_sauvegarde_model+'_final'+'.pth')
+    torch.save(model, chemin_vers_sauvegarde_dummy+'_final'+'.pth')
 
 
     # saving the losses in txt files : 
@@ -124,3 +114,7 @@ if train_dummy:
     with open('./losses/loss_train_'+model_name+'.txt', 'w') as f :
         for elt in loss_list_train : 
             f.write(str(elt) + '\n')
+
+
+
+dummy_model_loaded =  torch.load(chemin_vers_sauvegarde_dummy,map_location=torch.device('cpu'))
