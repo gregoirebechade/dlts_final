@@ -48,15 +48,15 @@ dataloader_validation = DataLoader(Mydataset('./data/spectrogrammes/validation/'
 
 
 
-chemin_vers_sauvegarde_dummy = './models/dummy_model/'
+chemin_vers_sauvegarde_dummy = 'models/dummy_model/'
 
 
 # set train_dummy to True to train the model
 train_dummy_model = False
 
 model_name='dummy_model'
-if not os.path.exists('./models/'+model_name):
-    os.makedirs('./models/'+model_name)
+if not os.path.exists('models/'+model_name):
+    os.makedirs('models/'+model_name)
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 model = Dummy_model()
 n_epochs=200
