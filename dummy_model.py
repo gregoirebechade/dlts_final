@@ -48,76 +48,73 @@ class Mydataset(torch.utils.data.Dataset):
 dataloader_test = DataLoader(Mydataset('./data/spectrogrammes/test/'), batch_size=10 , shuffle=True)
 dataloader_train = DataLoader(Mydataset('./data/spectrogrammes/train/'), batch_size=10 , shuffle=True)
 dataloader_validation = DataLoader(Mydataset('./data/spectrogrammes/validation/'), batch_size=10 , shuffle=True)
+if __name__ == '__main__': 
 
+    chemin_vers_sauvegarde_dummy = 'models/model_idiot/'
 
+    train_dummy_model = True
 
-chemin_vers_sauvegarde_dummy = 'models/dummy_model/'
-
-
-# set train_dummy to True to train the model
-train_dummy_model = True
-
-model_name='dummy_model'
-if not os.path.exists('models/'+model_name):
-    os.makedirs('models/'+model_name)
-device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
-model = Dummy_model()
-n_epochs=200
-loss = torch.nn.L1Loss()
-optimizer = torch.optim.Adam(model.parameters())
-model.to(device)
-loss_train=[]
-loss_val=[]
-if train_dummy_model:
-    for epoch in (range(n_epochs)):
-        print(epoch)
-        losstrain=0
-        counttrain=0
-        lossval=0
-        countval=0
-        for batch_x,batch_y in dataloader_train:
-            counttrain+=1
-            batch_x=batch_x.to(device)
-            batch_y = batch_y.long()
-            batch_y=batch_y.to(device)
-            optimizer.zero_grad()
-            mask_predicted = model(batch_x.float())
-            batch_y_predicted = batch_x * mask_predicted
-            l = loss(batch_y_predicted, batch_y)
-            l.backward()
-            losstrain+=l
-            optimizer.step()
-        for batch_x,batch_y in dataloader_validation:
-            countval+=1
-            batch_x=batch_x.to(device)
-            # print(model(batch_x.float())[0])
-            batch_y = batch_y.to(device)
-            with torch.no_grad():
+    model_name='model_idiot'
+    if not os.path.exists('models/'+model_name):
+        os.makedirs('models/'+model_name)
+    device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+    model = Dummy_model()
+    n_epochs=200
+    loss = torch.nn.L1Loss()
+    optimizer = torch.optim.Adam(model.parameters())
+    model.to(device)
+    loss_train=[]
+    loss_val=[]
+    if train_dummy_model:
+        for epoch in (range(n_epochs)):
+            print(epoch)
+            losstrain=0
+            counttrain=0
+            lossval=0
+            countval=0
+            for batch_x,batch_y in dataloader_train:
+                counttrain+=1
+                batch_x=batch_x.to(device)
+                batch_y = batch_y.long()
+                batch_y=batch_y.to(device)
+                optimizer.zero_grad()
                 mask_predicted = model(batch_x.float())
-                batch_y_predicted =  batch_x * mask_predicted
+                batch_y_predicted = batch_x * mask_predicted
                 l = loss(batch_y_predicted, batch_y)
-                lossval+=l
-        if epoch%10==0:
-            print(f'epoch {epoch}, training loss = {losstrain/counttrain}')
-            torch.save(model, chemin_vers_sauvegarde_dummy+model_name+'_'+str(epoch)+'.pth')
-        loss_train.append(losstrain/counttrain)
-        loss_val.append(lossval/countval)
-        
-    torch.save(model, chemin_vers_sauvegarde_dummy+'dummy_model_final'+'.pth')
+                l.backward()
+                losstrain+=l
+                optimizer.step()
+            for batch_x,batch_y in dataloader_validation:
+                countval+=1
+                batch_x=batch_x.to(device)
+                # print(model(batch_x.float())[0])
+                batch_y = batch_y.to(device)
+                with torch.no_grad():
+                    mask_predicted = model(batch_x.float())
+                    batch_y_predicted =  batch_x * mask_predicted
+                    l = loss(batch_y_predicted, batch_y)
+                    lossval+=l
+            if epoch%10==0:
+                print(f'epoch {epoch}, training loss = {losstrain/counttrain}')
+                torch.save(model, chemin_vers_sauvegarde_dummy+model_name+'_'+str(epoch)+'.pth')
+            loss_train.append(losstrain/counttrain)
+            loss_val.append(lossval/countval)
+            
+        torch.save(model, chemin_vers_sauvegarde_dummy+'model_idiot'+'.pth')
 
 
-    # saving the losses in txt files : 
-    loss_list_val = [loss_val[i].detach().cpu().numpy() for i in range(len(loss_val))]
-    loss_list_train = [loss_train[i].detach().cpu().numpy() for i in range(len(loss_train))]
+        # saving the losses in txt files : 
+        loss_list_val = [loss_val[i].detach().cpu().numpy() for i in range(len(loss_val))]
+        loss_list_train = [loss_train[i].detach().cpu().numpy() for i in range(len(loss_train))]
 
 
-    with open('./losses/loss_val_'+model_name+'.txt', 'w') as f : 
-        for elt in loss_list_val : 
-            f.write(str(elt) + '\n')
+        with open('./losses/loss_val_'+model_name+'.txt', 'w') as f : 
+            for elt in loss_list_val : 
+                f.write(str(elt) + '\n')
 
-    with open('./losses/loss_train_'+model_name+'.txt', 'w') as f :
-        for elt in loss_list_train : 
-            f.write(str(elt) + '\n')
+        with open('./losses/loss_train_'+model_name+'.txt', 'w') as f :
+            for elt in loss_list_train : 
+                f.write(str(elt) + '\n')
 
 
 
